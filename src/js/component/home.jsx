@@ -1,67 +1,71 @@
 import React, {useEffect, useState,} from 'react';
 
 const Home = () => {
-  const[userData, setUserData] = useState ({});
+  const[userTask, setUserTask] = useState ({});
   const [todo, setTodo] = useState('');
-useEffect = (() =>{
-createUser();
-getUserData();
+useEffect(() =>{
+ createUser()
+ getUserTask()
+
+
+
 }, []);
 
 
 
   const createUser = () => {
-   fetch ('https://playground.4geeks.com/todo/users/alexis',{
+   fetch ('https://playground.4geeks.com/todo/users/alexisloorandrade23',{
     method:'POST',
     headers:{
       'Content-Type':'application/json'
 
 
-    }
+    },
 
+    body: JSON.stringify({username:'alexisloorandrade23'}),
 
    })
    .then(respuesta=>{
     console.log('respuesta', respuesta);
     if(!respuesta.ok) throw new Error ('error creando usuario');
-    return respuesta.json
+    return respuesta.json();
    })
-   .then (datos => console.log('ahora en datos', datos))
-   .catch(error => console.log(error))
+   .then (datos => console.log('usuario creado', datos))
+   .catch(error => console.log('error creando usuario', error));
 }
 
-const getUserData = () => {
-  fetch('https://playground.4geeks.com/todo/users/alexis')
+const getUserTask = () => {
+  fetch('https://playground.4geeks.com/todo/users/alexisloorandrade23')
   .then (respuesta =>{
     console.log('respuesta', respuesta);
     if(!respuesta.ok) throw new Error ('error pidiendo usruario');
-  return respuesta.json()  
+  return respuesta.json();
 })
   .then (datos =>{
-    console.log('getuserdata', datos)
-    setUserData (datos)
+    console.log('Datos del usuario', datos)
+    setUserTask (datos)
   })
-  .catch (error => console.log(error))
+  .catch (error => console.log('error en tarea', error))
 }
 
 const createTask = () => {
   if (todo.trim().length == 0) return alert('task cant be empty')
-    fetch('https://playground.4geeks.com/todo/todos/alexis',{
+    fetch('https://playground.4geeks.com/todo/todos/alexisloorandrade23',{
       method: 'POST',
       headers:{
         'Content-Type':'application/json'
       },
-body: JSON.stringify({label:todo, done:false})
+body: JSON.stringify({ label:todo, done:false }),
 
     })
     .then (respuesta =>{
       console.log('respuesta', respuesta)
       if(!respuesta.ok) throw new Error ('error pidiendo usuario');
-      return respuesta.json ();
+      return respuesta.json();
     })
       .then (datos =>{
         console.log('datos', datos);
-        getUserData ();
+        getUserTask ();
         setTodo('');})
         .catch(error => console.log(error))}
 
@@ -72,20 +76,20 @@ body: JSON.stringify({label:todo, done:false})
         }
         const handleDelete = (id) =>{
           console.log(id)
-          fetch ('https://playground.4geeks.com/todos/todos/${+id}',{
+          fetch (`https://playground.4geeks.com/todos/todos/${id}`,{
             method:'DELETE',
             headers:{
               'Content-Type' : 'application/json'
             }
           })
-          then((respuesta) => {
+          .then((respuesta) => {
             console.log('respuesta', respuesta);
             if (!respuesta.ok) throw new Error('Error al eliminar la tarea');
             return respuesta.json(); 
           })
           .then(() => {
             console.log('Tarea eliminada correctamente');
-            getUserData(); 
+            getUserTask(); 
           })
           .catch((error) => console.log('Error en handleDelete:', error));
       };
@@ -98,10 +102,11 @@ body: JSON.stringify({label:todo, done:false})
           value={todo}
           onChange={(e) => setTodo(e.target.value)}
         />
+       
       </form>
       <ul>
-        {userData.todos?.length > 0
-          ? userData.todos.map((tarea) => (
+        {userTask.todos?.length > 0
+          ? userTask.todos.map((tarea) => (
               <li key={tarea.id}>
                 {tarea.label}
                 <span onClick={() => handleDelete(tarea.id)}> x </span>
@@ -118,3 +123,8 @@ body: JSON.stringify({label:todo, done:false})
 
 
 export default Home;
+
+
+
+
+

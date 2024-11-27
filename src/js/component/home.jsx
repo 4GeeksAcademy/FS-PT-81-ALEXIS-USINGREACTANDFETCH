@@ -6,6 +6,8 @@ const Home = () => {
 useEffect(() =>{
  createUser()
  getUserTask()
+ 
+
 
 
 
@@ -72,11 +74,13 @@ body: JSON.stringify({ label:todo, done:false }),
         const handleSubmit = (e) =>{
           e.preventDefault ();
           createTask();
+         
+          
 
         }
         const handleDelete = (id) =>{
-          console.log(id)
-          fetch (`https://playground.4geeks.com/todos/todos/${id}`,{
+         
+          fetch ('https://playground.4geeks.com/todo/todos/'+id,{
             method:'DELETE',
             headers:{
               'Content-Type' : 'application/json'
@@ -85,11 +89,9 @@ body: JSON.stringify({ label:todo, done:false }),
           .then((respuesta) => {
             console.log('respuesta', respuesta);
             if (!respuesta.ok) throw new Error('Error al eliminar la tarea');
-            return respuesta.json(); 
-          })
-          .then(() => {
-            console.log('Tarea eliminada correctamente');
-            getUserTask(); 
+            // return respuesta.json();
+            getUserTask()
+            
           })
           .catch((error) => console.log('Error en handleDelete:', error));
       };
@@ -97,20 +99,24 @@ body: JSON.stringify({ label:todo, done:false }),
   return (
     <div className="text-center">
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
+        <input className="" style={{width:"100px"}}
+          type="text" style={{color:"black", backgroundColor:"#D3D3D3", fontWeight:"bold"}}
           value={todo}
           onChange={(e) => setTodo(e.target.value)}
+
         />
        
       </form>
       <ul>
         {userTask.todos?.length > 0
           ? userTask.todos.map((tarea) => (
-              <li key={tarea.id}>
-                {tarea.label}
-                <span onClick={() => handleDelete(tarea.id)}> x </span>
-              </li>
+             <li key={tarea.id}>
+  {tarea.label}
+  <span onClick={() => handleDelete(tarea.id)}><i className="fa-solid fa-xmark" 
+  style={{marginLeft:"30px", color:"red", fontSize:"15px"}} />
+ 
+  </span>
+</li>
             ))
           : 'No hay tareas'}
       </ul>

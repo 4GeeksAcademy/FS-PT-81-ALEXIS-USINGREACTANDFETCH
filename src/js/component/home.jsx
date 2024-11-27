@@ -112,10 +112,11 @@ body: JSON.stringify({ label:todo, done:false }),
           ? userTask.todos.map((tarea) => (
              <li key={tarea.id}>
   {tarea.label}
+ <button style={{marginLeft:"30px", borderRadius:"40%", backgroundColor:"#00aae4"}} >
   <span onClick={() => handleDelete(tarea.id)}><i className="fa-solid fa-xmark" 
-  style={{marginLeft:"30px", color:"red", fontSize:"15px"}} />
+  style={{color:"white", fontSize:"15px"}} />
  
-  </span>
+  </span></button>
 </li>
             ))
           : 'No hay tareas'}
